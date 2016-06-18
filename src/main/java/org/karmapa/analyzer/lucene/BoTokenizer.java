@@ -1,30 +1,23 @@
 package org.karmapa.analyzer.lucene;
 
-import org.apache.lucene.analysis.Tokenizer;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.env.Environment;
+import org.apache.lucene.analysis.util.CharTokenizer;
+import org.apache.lucene.util.AttributeFactory;
 
 import java.io.IOException;
 import java.io.Reader;
 
-public final class BoTokenizer extends Tokenizer {
+public final class BoTokenizer extends CharTokenizer {
 
   public BoTokenizer() {
-    super();
+  }
+
+  public BoTokenizer(AttributeFactory factory) {
+    super(factory);
   }
 
   @Override
-  public boolean incrementToken() throws IOException {
-    return true;
-  }
-
-  @Override
-  public void reset() throws IOException {
-    super.reset();
-  }
-
-  @Override
-  public final void end() throws IOException {
-    super.end();
+  protected boolean isTokenChar(int c) {
+    // tibetan delimiter [།་ ]
+    return (! Character.isWhitespace(c)) && (3853 != c) && (3851 != c);
   }
 }
